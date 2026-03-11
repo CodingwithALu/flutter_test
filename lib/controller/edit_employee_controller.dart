@@ -6,6 +6,7 @@ import 'package:test/utils/constants/image_strings.dart';
 import 'package:test/utils/helpers/network_manager.dart';
 import 'package:test/utils/popups/full_screen_loader.dart';
 import 'package:test/utils/popups/loaders.dart';
+import 'employee_page_controller.dart';
 import '../repository/employee_repository.dart';
 
 class EditEmployeeController extends GetxController {
@@ -24,7 +25,7 @@ class EditEmployeeController extends GetxController {
       fullNameController.text = employee.fullName;
       emailController.text = employee.email;
       dob.value = employee.dateOfBirth;
-      phoneController.text = employee.email;
+      phoneController.text = employee.phone;
       addressController.text = employee.address;
       update();
     } catch (e) {
@@ -48,7 +49,23 @@ class EditEmployeeController extends GetxController {
         TFullScreenLoader.stopLoading();
         return;
       }
-      await repository.updateEmployee(employee);
+      final updatedEmployee = Employee(
+        id: employee.id,
+        fullName: fullNameController.text.trim(),
+        dateOfBirth: dob.value,
+        email: emailController.text.trim(),
+        phone: phoneController.text.trim(),
+        address: addressController.text.trim(),
+      );
+      await repository.updateEmployee(updatedEmployee);
+      final pageController = EmployeePageController.instance;
+      final index = pageController.allEmployees.indexWhere(
+        (e) => e.id != null && e.id == updatedEmployee.id,
+      );
+      if (index != -1) {
+        pageController.allEmployees[index] = updatedEmployee;
+      }
+      Get.back();
       TLoaders.successSnackBar(
         title: 'Done',
         message: 'Employee updated successfully.',

@@ -2,7 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 
 class Employee {
   const Employee({
-    this.id,
+    this.id = '',
     required this.fullName,
     required this.dateOfBirth,
     required this.email,
@@ -16,7 +16,6 @@ class Employee {
   final String email;
   final String phone;
   final String address;
-  static String _norm(String value) => value.trim().toLowerCase();
   factory Employee.empty() => Employee(
     id: null,
     fullName: '',

@@ -43,9 +43,7 @@ class CreateEmployeeFormPage extends StatelessWidget {
               TextFormField(
                 controller: controller.emailController,
                 decoration: const InputDecoration(labelText: 'Email'),
-                validator: (v) => TValidator.validateEmail(
-                  'Địa chỉ email không đúng định dạng',
-                ),
+                validator: (v) => TValidator.validateEmail(v),
               ),
               const SizedBox(height: 12),
               Obx(
@@ -67,8 +65,7 @@ class CreateEmployeeFormPage extends StatelessWidget {
               TextFormField(
                 controller: controller.phoneController,
                 decoration: const InputDecoration(labelText: 'Điện thoại'),
-                validator: (v) =>
-                    TValidator.validatePhoneNumber('SĐT không đúng định dạng'),
+                validator: (v) => TValidator.validatePhoneNumber(v),
               ),
               const SizedBox(height: 12),
               TextFormField(
@@ -77,11 +74,9 @@ class CreateEmployeeFormPage extends StatelessWidget {
                 maxLines: 2,
               ),
               const SizedBox(height: 16),
-              Obx(
-                () => FilledButton(
-                  onPressed: () => controller.createEmployee(),
-                  child: Text('Lưu'),
-                ),
+              FilledButton(
+                onPressed: () async => controller.createEmployee(),
+                child: Text('Lưu'),
               ),
             ],
           ),

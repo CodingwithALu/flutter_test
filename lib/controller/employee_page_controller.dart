@@ -11,10 +11,10 @@ class EmployeePageController extends GetxController {
   static EmployeePageController get instance => Get.find();
   final repository = Get.put(EmployeeRepository());
   GlobalKey<FormState> employeeKey = GlobalKey<FormState>();
-  RxList<Employee> allEmployees = <Employee>[].obs;
+  final RxList<Employee> allEmployees = <Employee>[].obs;
   @override
-  void onInit() {
-    super.onInit();
+  void onReady() {
+    super.onReady();
     fetchEmployeeWidthPage(1, 10);
   }
 

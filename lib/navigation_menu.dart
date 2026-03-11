@@ -11,7 +11,6 @@ class NavigationMenu extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final controller = Get.put(NavigationController());
-    // final darkMode = THelperFunctions.isDarkMode(context);
     return Scaffold(
       bottomNavigationBar: Obx(
         () => NavigationBar(
@@ -20,13 +19,9 @@ class NavigationMenu extends StatelessWidget {
           selectedIndex: controller.selectedIndex.value,
           onDestinationSelected: (index) =>
               controller.selectedIndex.value = index,
-          // backgroundColor: TColors.white,
-          // indicatorColor: darkMode
-          //     ? TColors.white.withAlpha((0.1 * 255).round())
-          //     : TColors.black.withAlpha((0.1 * 255).round()),
           destinations: [
-            NavigationDestination(icon: Icon(Iconsax.home), label: "Home"),
-            NavigationDestination(icon: Icon(Iconsax.shop), label: "Eployee"),
+            NavigationDestination(icon: Icon(Iconsax.shop), label: "Nhân sự"),
+            NavigationDestination(icon: Icon(Iconsax.home), label: "Trang chủ"),
           ],
         ),
       ),
@@ -37,5 +32,5 @@ class NavigationMenu extends StatelessWidget {
 
 class NavigationController extends GetxController {
   final Rx<int> selectedIndex = 0.obs;
-  final screens = [const HomeScreen(), const EmployeeScreen()];
+  final screens = [const EmployeeScreen(), const HomeScreen()];
 }

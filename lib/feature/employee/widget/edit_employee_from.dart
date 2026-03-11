@@ -27,7 +27,7 @@ class EditEmployeeFrom extends StatelessWidget {
     controller.initEmployee(employees);
     final df = DateFormat('dd/MM/yyyy');
     return Scaffold(
-      appBar: AppBar(title: Text('Thêm nhân sự')),
+      appBar: AppBar(title: Text('Sửa nhân sự')),
       body: SafeArea(
         child: Form(
           key: controller.employeeKey,
@@ -44,9 +44,7 @@ class EditEmployeeFrom extends StatelessWidget {
               TextFormField(
                 controller: controller.emailController,
                 decoration: const InputDecoration(labelText: 'Email'),
-                validator: (v) => TValidator.validateEmail(
-                  'Địa chỉ email không đúng định dạng',
-                ),
+                validator: (v) => TValidator.validateEmail(v),
               ),
               const SizedBox(height: 12),
               Obx(
@@ -68,8 +66,7 @@ class EditEmployeeFrom extends StatelessWidget {
               TextFormField(
                 controller: controller.phoneController,
                 decoration: const InputDecoration(labelText: 'Điện thoại'),
-                validator: (v) =>
-                    TValidator.validatePhoneNumber('SĐT không đúng định dạng'),
+                validator: (v) => TValidator.validatePhoneNumber(v),
               ),
               const SizedBox(height: 12),
               TextFormField(
@@ -78,11 +75,9 @@ class EditEmployeeFrom extends StatelessWidget {
                 maxLines: 2,
               ),
               const SizedBox(height: 16),
-              Obx(
-                () => FilledButton(
-                  onPressed: () => controller.updateEmployee(employees),
-                  child: Text('Lưu'),
-                ),
+              FilledButton(
+                onPressed: () => controller.updateEmployee(employees),
+                child: Text('Lưu'),
               ),
             ],
           ),
