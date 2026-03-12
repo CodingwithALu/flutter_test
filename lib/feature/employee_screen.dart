@@ -8,12 +8,41 @@ import 'package:test/route/route.dart';
 import '../controller/employee_page_controller.dart';
 import '../models/employee_model.dart';
 
-class EmployeeScreen extends StatelessWidget {
+class EmployeeScreen extends StatefulWidget {
   const EmployeeScreen({super.key});
 
   @override
+  State<EmployeeScreen> createState() => _EmployeeScreenState();
+}
+
+class _EmployeeScreenState extends State<EmployeeScreen> {
+  final EmployeePageController controller = EmployeePageController.instance;
+  late final ScrollController _scrollController;
+
+  @override
+  void initState() {
+    super.initState();
+    _scrollController = ScrollController()..addListener(_onScroll);
+  }
+
+  void _onScroll() {
+    if (!_scrollController.hasClients) return;
+    final position = _scrollController.position;
+    const threshold = 200.0;
+    if (position.pixels >= position.maxScrollExtent - threshold) {
+      controller.loadNextPage();
+    }
+  }
+
+  @override
+  void dispose() {
+    _scrollController.removeListener(_onScroll);
+    _scrollController.dispose();
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
-    final controller = EmployeePageController.instance;
     return Scaffold(
       appBar: AppBar(title: const Text('Danh sách nhân sự')),
       floatingActionButton: FloatingActionButton(
@@ -27,10 +56,19 @@ class EmployeeScreen extends StatelessWidget {
           return const Center(child: Text('Chưa có dữ liệu'));
         }
         final df = DateFormat('dd/MM/yyyy');
+        final showLoadingMore = controller.isLoadingMore.value;
+        final itemCount = items.length + (showLoadingMore ? 1 : 0);
         return ListView.separated(
-          itemCount: items.length,
+          controller: _scrollController,
+          itemCount: itemCount,
           separatorBuilder: (_, _) => const Divider(height: 1),
           itemBuilder: (context, index) {
+            if (showLoadingMore && index == itemCount - 1) {
+              return const Padding(
+                padding: EdgeInsets.symmetric(vertical: 16),
+                child: Center(child: CircularProgressIndicator()),
+              );
+            }
             final e = items[index];
             final subtitleParts = <String>[];
             if (e.email.trim().isNotEmpty) subtitleParts.add(e.email.trim());
@@ -70,8 +108,8 @@ class EmployeeScreen extends StatelessWidget {
       context: context,
       builder: (context) {
         return AlertDialog(
-          title: const Text('Xóa nhân sự!'),
-          content: Text('Bạn có chắc muốn xóa'),
+          title: const Text('Xóa nhân sự'),
+          content: Text('Bạn có chắc muốn xóa!'),
           actions: [
             SizedBox(
               width: double.infinity,
