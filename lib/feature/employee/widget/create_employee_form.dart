@@ -71,7 +71,6 @@ class CreateEmployeeFormPage extends StatelessWidget {
               TextFormField(
                 controller: controller.addressController,
                 decoration: const InputDecoration(labelText: 'Địa chỉ'),
-                maxLines: 2,
               ),
               const SizedBox(height: 16),
               FilledButton(
